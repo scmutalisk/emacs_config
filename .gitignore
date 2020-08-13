@@ -3,3 +3,5 @@ auto-save-list
 transient
 smex-items
 readme.el
+
+.mc-lists.el
