@@ -1,0 +1,298 @@
+#+TITLE: My GNU Emacs Configuration
+#+DESCRIPTION: Loading emacs configuration file using org-babel
+
+** Introduction
+
+#+begin_src emacs-lisp
+  ;; username
+  (setq user-name "scmutalisk")
+  ;; email
+  (setq user-email "scmutalisk@protonmail.com")
+  ;; discord
+  (setq user-discord "scmutalisk#4756")
+  ;; telegram
+  (setq user-telegram "@scmutalisk")
+#+end_src
+
+
+** Package Library
+
+- GNU
+- Melpa
+- Melpa-Stable
+
+#+begin_src emacs-lisp
+  (require 'package)
+  (setq package-enable-at-startup nil)
+  (setq package-archives nil)
+  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+  (package-initialize)
+#+end_src
+
+#+begin_src emacs-lisp
+  (unless (and (file-exists-p (concat init-dir "elpa/archives/gnu"))
+	       (file-exists-p (concat init-dir "elpa/archives/melpa"))
+	       (file-exists-p (concat init-dir "elpa/archives/melpa-stable")))
+    (package-refresh-contents))
+#+end_src
+
+#+begin_src emacs-lisp
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+#+end_src
+
+#+begin_src emacs-lisp
+  (eval-when-compile
+    (require 'use-package)
+    (setq use-package-verbose t))
+#+end_src
+
+
+** Custom
+
+#+begin_src emacs-lisp
+  (show-paren-mode t)
+  ;; disable toolbar
+  (tool-bar-mode -1)
+  ;; disable menubar
+  (menu-bar-mode -1)
+  ;; disable scrollbar
+  (scroll-bar-mode -1)
+  ;; y/n instead or yes/no
+  (fset 'yes-or-no-p 'y-or-n-p)
+  ;; revert mode
+  (global-auto-revert-mode t)
+  ;; auto indent on return key
+  (define-key global-map (kbd "RET") 'newline-and-indent)
+  ;; set font style for frames
+  (add-to-list 'default-frame-alist '(font . "hack-12"))
+  ;; disable scroll bar for frames
+  (add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
+  ;; windmove default (shift + left/right arrows)
+  (when (fboundp 'windmove-default-keybindings)
+    (windmove-default-keybindings))
+  ;; disable creating lockfiles
+  (setq create-lockfiles nil)
+  ;; tabbing for org-src
+  (setq org-src-tab-acts-natively t)
+  ;; disable backup files
+  (setq make-backup-files nil)
+  ;; disable auto save list files names
+  (setq auto-save-list-file-name nil)
+  ;; disable auto save
+  (setq auto-save-default nil)
+  ;; no idea
+  (setq sentence-end-double-space nil)
+  ;; garbage collector size
+  (setq gc-cons-threshold 20000000)
+  (setq vc-follow-symlinks t)
+  (setq inhibit-splash-screen t)
+  (setq inhibit-startup-message t)
+  (setq inhibit-startup-screen t)  
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; enchanted Meta-x
+  (use-package smex
+    :ensure t
+    :bind
+    (("M-x" . smex)
+     ("M-X" . smex-major-mode-commands)
+     ("C-c C-c M-x" . execute-extended-command)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; ido mode
+  (use-package ido
+    :ensure t
+    :init
+    (setq ido-enable-flex-matching t)
+    :config
+    (ido-mode t)
+    (ido-everywhere t))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; ido, but vertical
+  (use-package ido-vertical-mode
+  :ensure t
+  :init
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+  (setq ido-vertical-show-count t)
+  :config
+  (ido-vertical-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; package to edit multiple lines
+  (use-package multiple-cursors
+    :ensure t
+    :bind
+    (("C-." . mc/mark-next-like-this)
+     ("C-," . mc/mark-previous-like-this)
+     ("C->" . mc/unmark-next-like-this)
+     ("C-<" . mc/unmark-previous-like-this)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; nim language mode
+  (use-package nim-mode
+    :ensure t)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; emacs activity in discord
+  (use-package elcord
+    :ensure t)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; javascript language mode
+  (use-package js2-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist `(,(rx ".js" string-end) . js2-mode)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; kivy framework mode
+  (use-package kivy-mode
+    :ensure t)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; try any packages u want!
+  (use-package try
+    :ensure t)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; browse other pcs via ssh
+  (use-package tramp-term
+    :ensure t)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; no comments
+  (use-package magit
+    :ensure t)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; html auto-completion package
+  (use-package emmet-mode
+    :ensure t
+    :hook
+    ((sgml-mode . emmet-mode)
+     (html-mode . emmet-mode)
+     (css-mode-hook . emmet-mode)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; live filtering in dired buffers
+  (use-package dired-narrow
+    :ensure t
+    :config
+    (put 'dired-find-alternate-file 'disabled nil)
+    :bind(:map dired-mode-map("/" . dired-narrow-fuzzy)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; cursor highlighting
+  (use-package beacon
+    :ensure t
+    :config
+    (beacon-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; vue framework mode
+  (use-package vue-mode
+    :ensure t
+    :config
+    ;; disable highlighted background
+    (setq mmm-submode-decoration-level 0))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; python env
+  (use-package elpy
+    :ensure t
+    :config
+    (elpy-enable))
+#+end_src
+
+
+
+
+** Functions
+
+#+begin_src emacs-lisp
+  (defun create-scratch-buffer nil
+    "create a scratch buffer"
+    (interactive)
+    (switch-to-buffer (get-buffer-create "*scratch*"))
+    (lisp-interaction-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun zoom-in ()
+    "Zooming +."
+    (interactive)
+    (let ((x (+ (face-attribute 'default :height)
+		10)))
+      (set-face-attribute 'default nil :height x)))  
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun zoom-out ()
+    "Zooming -."
+    (interactive)
+    (let ((x (- (face-attribute 'default :height)
+		10)))
+      (set-face-attribute 'default nil :height x)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; bind both zoom functions to keys
+  (define-key global-map (kbd "C-1") 'zoom-in)
+  (define-key global-map (kbd "C-0") 'zoom-out)
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun kill-dired-buffers ()
+    "Kill all open dired buffers."
+    (interactive)
+    (mapc (lambda (buffer)
+	    (when (eq 'dired-mode (buffer-local-value 'major-mode buffer))
+	      (kill-buffer buffer)))
+	  (buffer-list)))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun kill-other-buffers ()
+    "Kill all other buffers."
+    (interactive)
+    (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun sudo-find-file (file-name)
+    "Open file with sudo rights."
+    (interactive "FSudo Find File: ")
+    (let ((tramp-file-name (concat "/sudo::" (expand-file-name file-name))))
+      (find-file tramp-file-name)))
+#+end_src
+
+
+** UI
+
+#+begin_src emacs-lisp
+  (use-package zenburn-theme
+    :ensure t
+    :config
+    (load-theme 'zenburn t)
+    (set-frame-font "Hack-12"))
+#+end_src
