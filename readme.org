@@ -49,6 +49,12 @@
     (setq use-package-verbose t))
 #+end_src
 
+#+begin_src emacs-lisp
+  ;; global ensure packages
+  (require 'use-package-ensure)
+  (setq use-package-always-ensure t)
+#+end_src
+
 
 ** Custom
 
@@ -96,7 +102,6 @@
 #+begin_src emacs-lisp
   ;; enchanted Meta-x
   (use-package smex
-    :ensure t
     :bind
     (("M-x" . smex)
      ("M-X" . smex-major-mode-commands)
@@ -106,7 +111,6 @@
 #+begin_src emacs-lisp
   ;; ido mode
   (use-package ido
-    :ensure t
     :init
     (setq ido-enable-flex-matching t)
     :config
@@ -117,7 +121,6 @@
 #+begin_src emacs-lisp
   ;; ido, but vertical
   (use-package ido-vertical-mode
-  :ensure t
   :init
   (setq ido-vertical-define-keys 'C-n-and-C-p-only)
   (setq ido-vertical-show-count t)
@@ -128,7 +131,6 @@
 #+begin_src emacs-lisp
   ;; package to edit multiple lines
   (use-package multiple-cursors
-    :ensure t
     :bind
     (("C-." . mc/mark-next-like-this)
      ("C-," . mc/mark-previous-like-this)
@@ -138,52 +140,44 @@
 
 #+begin_src emacs-lisp
   ;; nim language mode
-  (use-package nim-mode
-    :ensure t)
+  (use-package nim-mode)
 #+end_src
 
 #+begin_src emacs-lisp
   ;; emacs activity in discord
-  (use-package elcord
-    :ensure t)
+  (use-package elcord)
 #+end_src
 
 #+begin_src emacs-lisp
   ;; javascript language mode
   (use-package js2-mode
-    :ensure t
     :config
     (add-to-list 'auto-mode-alist `(,(rx ".js" string-end) . js2-mode)))
 #+end_src
 
 #+begin_src emacs-lisp
   ;; kivy framework mode
-  (use-package kivy-mode
-    :ensure t)
+  (use-package kivy-mode)
 #+end_src
 
 #+begin_src emacs-lisp
   ;; try any packages u want!
-  (use-package try
-    :ensure t)
+  (use-package try)
 #+end_src
 
 #+begin_src emacs-lisp
   ;; browse other pcs via ssh
-  (use-package tramp-term
-    :ensure t)
+  (use-package tramp-term)
 #+end_src
 
 #+begin_src emacs-lisp
   ;; no comments
-  (use-package magit
-    :ensure t)
+  (use-package magit)
 #+end_src
 
 #+begin_src emacs-lisp
   ;; html auto-completion package
   (use-package emmet-mode
-    :ensure t
     :hook
     ((sgml-mode . emmet-mode)
      (html-mode . emmet-mode)
@@ -193,7 +187,6 @@
 #+begin_src emacs-lisp
   ;; live filtering in dired buffers
   (use-package dired-narrow
-    :ensure t
     :config
     (put 'dired-find-alternate-file 'disabled nil)
     :bind(:map dired-mode-map("/" . dired-narrow-fuzzy)))
@@ -202,7 +195,6 @@
 #+begin_src emacs-lisp
   ;; cursor highlighting
   (use-package beacon
-    :ensure t
     :config
     (beacon-mode 1))
 #+end_src
@@ -210,7 +202,6 @@
 #+begin_src emacs-lisp
   ;; vue framework mode
   (use-package vue-mode
-    :ensure t
     :config
     ;; disable highlighted background
     (setq mmm-submode-decoration-level 0))
@@ -219,7 +210,6 @@
 #+begin_src emacs-lisp
   ;; python env
   (use-package elpy
-    :ensure t
     :config
     (elpy-enable))
 #+end_src
@@ -291,7 +281,6 @@
 
 #+begin_src emacs-lisp
   (use-package zenburn-theme
-    :ensure t
     :config
     (load-theme 'zenburn t)
     (set-frame-font "Hack-12"))
