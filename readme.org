@@ -100,6 +100,11 @@
 #+end_src
 
 #+begin_src emacs-lisp
+  ;; pdf tools
+  (use-package pdf-tools)
+#+end_src
+
+#+begin_src emacs-lisp
   ;; enchanted Meta-x
   (use-package smex
     :bind
