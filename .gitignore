@@ -1,7 +1,9 @@
 elpa
+elpy
 auto-save-list
 transient
 smex-items
 readme.el
+ido.last
 
 .mc-lists.el
