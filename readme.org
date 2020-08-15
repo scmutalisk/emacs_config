@@ -101,7 +101,10 @@
 
 #+begin_src emacs-lisp
   ;; pdf tools
-  (use-package pdf-tools)
+  (use-package pdf-tools
+    :init
+    (add-hook 'doc-view-mode-hook 'pdf-tools-install)
+    (setq pdf-view-use-unicode-ligther nil))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -194,7 +197,8 @@
   (use-package dired-narrow
     :config
     (put 'dired-find-alternate-file 'disabled nil)
-    :bind(:map dired-mode-map("/" . dired-narrow-fuzzy)))
+    :bind
+    (:map dired-mode-map("/" . dired-narrow-fuzzy)))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -207,7 +211,7 @@
 #+begin_src emacs-lisp
   ;; vue framework mode
   (use-package vue-mode
-    :config
+    :init
     ;; disable highlighted background
     (setq mmm-submode-decoration-level 0))
 #+end_src
