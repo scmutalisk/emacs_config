@@ -3,6 +3,7 @@ elpy
 eshell
 auto-save-list
 transient
+tramp
 smex-items
 readme.el
 ido.last

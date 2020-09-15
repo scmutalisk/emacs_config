@@ -96,7 +96,9 @@
   (setq vc-follow-symlinks t)
   (setq inhibit-splash-screen t)
   (setq inhibit-startup-message t)
-  (setq inhibit-startup-screen t)  
+  (setq inhibit-startup-screen t)
+  ;; remove whitespace on save hook
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+end_src
 
 #+begin_src emacs-lisp
@@ -242,7 +244,7 @@
     (interactive)
     (let ((x (+ (face-attribute 'default :height)
 		10)))
-      (set-face-attribute 'default nil :height x)))  
+      (set-face-attribute 'default nil :height x)))
 #+end_src
 
 #+begin_src emacs-lisp
