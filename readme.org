@@ -1,5 +1,4 @@
 #+TITLE: My GNU Emacs Configuration
-#+DESCRIPTION: Loading emacs configuration file using org-babel
 
 ** Introduction
 
@@ -60,53 +59,74 @@
 
 #+begin_src emacs-lisp
   (show-paren-mode t)
-  ;; disable toolbar
   (tool-bar-mode -1)
-  ;; disable menubar
   (menu-bar-mode -1)
-  ;; disable scrollbar
   (scroll-bar-mode -1)
-  ;; y/n instead or yes/no
   (fset 'yes-or-no-p 'y-or-n-p)
-  ;; revert mode
   (global-auto-revert-mode t)
-  ;; auto indent on return key
   (define-key global-map (kbd "RET") 'newline-and-indent)
-  ;; set font style for frames
   (add-to-list 'default-frame-alist '(font . "hack-12"))
-  ;; disable scroll bar for frames
   (add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
-  ;; windmove default (shift + left/right arrows)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (when (fboundp 'windmove-default-keybindings)
     (windmove-default-keybindings))
-  ;; disable creating lockfiles
   (setq create-lockfiles nil)
-  ;; tabbing for org-src
   (setq org-src-tab-acts-natively t)
-  ;; disable backup files
   (setq make-backup-files nil)
-  ;; disable auto save list files names
   (setq auto-save-list-file-name nil)
-  ;; disable auto save
   (setq auto-save-default nil)
-  ;; no idea
   (setq sentence-end-double-space nil)
-  ;; garbage collector size
   (setq gc-cons-threshold 20000000)
   (setq vc-follow-symlinks t)
   (setq inhibit-splash-screen t)
   (setq inhibit-startup-message t)
   (setq inhibit-startup-screen t)
-  ;; remove whitespace on save hook
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :init
+    (yas-global-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; auto completion
+  (use-package company
+    :diminish company-mode
+    :init
+    (global-company-mode)
+    :config
+    (setq company-backends
+	  '((company-files
+	     company-keywords
+	     company-capf)
+	    (company-abbrev company-dabbrev)
+	    )))
+  ;; statistics
+  (use-package company-statistics
+    :init
+    (company-statistics-mode))
+  ;; web
+  (use-package company-web)
+  ;; switch company backends
+  (use-package company-try-hard
+    :bind
+    (("C-<tab>" . company-try-hard)
+     :map company-active-map
+     ("C-<tab>" . company-try-hard)))
+  ;; quick help
+  (use-package company-quickhelp
+    :config
+    (company-quickhelp-mode))
 #+end_src
 
 #+begin_src emacs-lisp
   ;; pdf tools
   (use-package pdf-tools
     :init
-    (add-hook 'doc-view-mode-hook 'pdf-tools-install)
-    (setq pdf-view-use-unicode-ligther nil))
+    (setq pdf-view-use-unicode-ligther nil)
+    :hook
+    (doc-view-mode-hook . pdf-tools-install))
 #+end_src
 
 #+begin_src emacs-lisp
@@ -221,7 +241,13 @@
 #+begin_src emacs-lisp
   ;; python env
   (use-package elpy
-    :config
+    :bind
+    (:map elpy-mode-map
+	  ("C-M-n" . elpy-nav-forward-block)
+	  ("C-M-p" . elpy-nav-backward-block))
+    :hook
+    (elpy-mode . flycheck-mode)
+    :init
     (elpy-enable))
 #+end_src
 

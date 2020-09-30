@@ -7,5 +7,5 @@ tramp
 smex-items
 readme.el
 ido.last
-
+company-statistics-cache.el
 .mc-lists.el
