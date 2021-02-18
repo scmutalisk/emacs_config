@@ -65,6 +65,10 @@
   (fset 'yes-or-no-p 'y-or-n-p)
   (global-auto-revert-mode t)
   (define-key global-map (kbd "RET") 'newline-and-indent)
+
+  ;; (set-frame-parameter (selected-frame) 'alpha '(95 95))
+  ;; (add-to-list 'default-frame-alist '(alpha 95 95))
+
   (add-to-list 'default-frame-alist '(font . "hack-12"))
   (add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -266,6 +270,14 @@
 
 
 ** Functions
+
+#+begin_src emacs-lisp
+  (defun transparency (value)
+    "Sets transparency for the frame window. 0=transparent/100=opaque"
+    (interactive "nTransparency Value 0 - 100 opaque:")
+    (set-frame-parameter (selected-frame) 'alpha value))
+
+#+end_src
 
 #+begin_src emacs-lisp
   (defun create-scratch-buffer nil
