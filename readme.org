@@ -140,8 +140,10 @@
   (use-package pdf-tools
     :init
     (setq pdf-view-use-unicode-ligther nil)
-    :hook
-    (doc-view-mode-hook . pdf-tools-install))
+    :mode ("\\.pdf\\'" . pdf-view-mode)
+    :config
+    (pdf-tools-install))
+
 #+end_src
 
 #+begin_src emacs-lisp
