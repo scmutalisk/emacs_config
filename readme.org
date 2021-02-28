@@ -1,36 +1,52 @@
+#+OPTIONS: toc:nil date:nil
+#+LATEX: \setcounter{secnumdepth}{0}
+#+LATEX_CLASS_OPTIONS: [12pt]
 #+TITLE: My GNU Emacs Configuration
 
-** Introduction
+* Introduction
 
 #+begin_src emacs-lisp
   ;; username
   (setq user-name "scmutalisk")
+
   ;; email
   (setq user-email "scmutalisk@protonmail.com")
+
   ;; discord
   (setq user-discord "scmutalisk#4756")
+
   ;; telegram
   (setq user-telegram "@scmutalisk")
 #+end_src
 
 
-** Package Library
-
-- GNU
-- Melpa
-- Melpa-Stable
+* Package Library
 
 #+begin_src emacs-lisp
+  ;; main package sistem
   (require 'package)
+
+  ;; disable package on at startup
   (setq package-enable-at-startup nil)
+
+  ;; set package archives to nil
   (setq package-archives nil)
+
+  ;; gnu
   (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+
+  ;; melpa
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+
+  ;; melpa-stable
   (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+
+  ;; init packages
   (package-initialize)
 #+end_src
 
 #+begin_src emacs-lisp
+  ;; refresh package contents
   (unless (and (file-exists-p (concat init-dir "elpa/archives/gnu"))
 	       (file-exists-p (concat init-dir "elpa/archives/melpa"))
 	       (file-exists-p (concat init-dir "elpa/archives/melpa-stable")))
@@ -38,56 +54,69 @@
 #+end_src
 
 #+begin_src emacs-lisp
+  ;; install use-package
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
-#+end_src
 
-#+begin_src emacs-lisp
-  (eval-when-compile
-    (require 'use-package)
-    (setq use-package-verbose t))
-#+end_src
+  ;; show loading packages while loading time
+  (require 'use-package)
+  (setq use-package-verbose t)
 
-#+begin_src emacs-lisp
-  ;; global ensure packages
-  (require 'use-package-ensure)
-  (setq use-package-always-ensure t)
+  ;; install always ensure package
+  (use-package use-package-ensure
+    :init
+    (setq use-package-always-ensure t))
 #+end_src
 
 
-** Custom
+* Custom
 
 #+begin_src emacs-lisp
+  ;; highlight parenthesis
   (show-paren-mode t)
+  ;; disable toolbar
   (tool-bar-mode -1)
+  ;; disable bar
   (menu-bar-mode -1)
+  ;; disable scroll bar
   (scroll-bar-mode -1)
+  ;; y/n instead of yes/no
   (fset 'yes-or-no-p 'y-or-n-p)
+  ;; turn on auto revert mode
   (global-auto-revert-mode t)
+  ;; indent on return key
   (define-key global-map (kbd "RET") 'newline-and-indent)
-
-  ;; (set-frame-parameter (selected-frame) 'alpha '(95 95))
-  ;; (add-to-list 'default-frame-alist '(alpha 95 95))
-
+  ;; set font for frames
   (add-to-list 'default-frame-alist '(font . "hack-12"))
+  ;; disable scroll bar for frames
   (add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
+  ;; remove white spaces on save hook
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  ;; switch buffers (shift) + left,right,top,bottom arrows
   (when (fboundp 'windmove-default-keybindings)
     (windmove-default-keybindings))
+  ;; disable lock files
   (setq create-lockfiles nil)
+  ;; identation for src blocks in org mode
   (setq org-src-tab-acts-natively t)
+  ;; disable backup files
   (setq make-backup-files nil)
+  ;; disable auto save list file names
   (setq auto-save-list-file-name nil)
+  ;; disable default auto save
   (setq auto-save-default nil)
+  ;; remove double space
   (setq sentence-end-double-space nil)
+  ;; garbage collector size
   (setq gc-cons-threshold 20000000)
+  ;; symlinks
   (setq vc-follow-symlinks t)
-  (setq inhibit-splash-screen t)
-  (setq inhibit-startup-message t)
+  ;; disable default startup screen
   (setq inhibit-startup-screen t)
 #+end_src
 
 #+begin_src emacs-lisp
+  ;; yasnippet
   (use-package yasnippet
     :init
     (yas-global-mode 1))
@@ -271,7 +300,7 @@
 
 
 
-** Functions
+* Functions
 
 #+begin_src emacs-lisp
   (defun transparency (value)
@@ -339,7 +368,7 @@
 #+end_src
 
 
-** UI
+* UI
 
 #+begin_src emacs-lisp
   (use-package zenburn-theme
