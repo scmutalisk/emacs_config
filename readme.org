@@ -23,10 +23,10 @@
 * Package Library
 
 #+begin_src emacs-lisp
-  ;; main package sistem
+  ;; main package system
   (require 'package)
 
-  ;; disable package on at startup
+  ;; set package to nil on start up
   (setq package-enable-at-startup nil)
 
   ;; set package archives to nil
@@ -172,7 +172,6 @@
     :mode ("\\.pdf\\'" . pdf-view-mode)
     :config
     (pdf-tools-install))
-
 #+end_src
 
 #+begin_src emacs-lisp
@@ -225,10 +224,10 @@
 #+end_src
 
 #+begin_src emacs-lisp
-  ;; javascript language mode
+    ;; js2 mode
   (use-package js2-mode
     :config
-    (add-to-list 'auto-mode-alist `(,(rx ".js" string-end) . js2-mode)))
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
 #+end_src
 
 #+begin_src emacs-lisp
