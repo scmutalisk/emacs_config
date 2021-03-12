@@ -116,6 +116,11 @@
 #+end_src
 
 #+begin_src emacs-lisp
+  ;; glsl-mode
+  (use-package glsl-mode)
+#+end_src
+
+#+begin_src emacs-lisp
   ;; yasnippet
   (use-package yasnippet
     :init
