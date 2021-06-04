@@ -326,6 +326,14 @@
 #+end_src
 
 
+* Scripts
+
+#+begin_src emacs-lisp
+  ;; load
+  (load "~/.emacs.d/custom/ixio.el")
+#+end_src
+
+
 * UI
 
 #+begin_src emacs-lisp
