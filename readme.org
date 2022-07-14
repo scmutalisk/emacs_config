@@ -1,0 +1,304 @@
+#+TITLE: My GNU Emacs Configuration
+
+* Introduction
+
+#+begin_src emacs-lisp
+  ;; username
+  (setq user-name "scmutalisk")
+
+  ;; email
+  (setq user-email "scmutalisk@protonmail.com")
+
+  ;; discord
+  (setq user-discord "scmutalisk#4756")
+
+  ;; telegram
+  (setq user-telegram "@scmutalisk")
+#+end_src
+
+
+* Package Library
+
+#+begin_src emacs-lisp
+  ;; main package system
+  (require 'package)
+
+  ;; set package to nil on start up
+  (setq package-enable-at-startup nil)
+
+  ;; set package archives to nil
+  (setq package-archives nil)
+
+  ;; gnu
+  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+
+  ;; melpa
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+
+  ;; melpa-stable
+  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+
+  ;; init packages
+  (package-initialize)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; refresh package contents
+  (unless (and (file-exists-p (concat init-dir "elpa/archives/gnu"))
+	       (file-exists-p (concat init-dir "elpa/archives/melpa"))
+	       (file-exists-p (concat init-dir "elpa/archives/melpa-stable")))
+    (package-refresh-contents))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; install use-package
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+
+  ;; show loading packages while loading time
+  (require 'use-package)
+  (setq use-package-verbose t)
+
+  ;; install always ensure package
+  (use-package use-package-ensure
+    :init
+    (setq use-package-always-ensure t))
+#+end_src
+
+
+* Custom
+
+#+begin_src emacs-lisp
+  ;; load custom scripts & third parties
+  (load (concat init-dir "custom/custom_functions.el"))
+  (load (concat init-dir "custom/ixio.el"))
+  (load (concat init-dir "custom/dired-hide-permissions.el"))
+#+end_src
+
+
+* Main
+
+#+begin_src emacs-lisp
+  ;; bind window split toggler to key
+  (global-set-key (kbd "C-x /") 'toggle-window-split)
+  ;; bind zoom-in to key
+  (define-key global-map (kbd "C-1") 'zoom-in)
+  ;; bind zoom-out to key
+  (define-key global-map (kbd "C-0") 'zoom-out)
+  ;; hide dired permissions
+  (dired-hide-permissions-mode-always)
+  ;; set font
+  (set-frame-font "Hack-12")
+  ;; set font for frames
+  (add-to-list 'default-frame-alist '(font . "Hack-12"))
+  ;; set transparency for other frames
+  (add-to-list 'default-frame-alist '(alpha 85 85))
+  ;; highlight parenthesis
+  (show-paren-mode t)
+  ;; disable toolbar
+  (tool-bar-mode -1)
+  ;; disable bar
+  (menu-bar-mode -1)
+  ;; disable scroll bar
+  (scroll-bar-mode -1)
+  ;; y/n instead of yes/no
+  (fset 'yes-or-no-p 'y-or-n-p)
+  ;; turn on auto revert mode
+  (global-auto-revert-mode t)
+  ;; indent on return key
+  (define-key global-map (kbd "RET") 'newline-and-indent)
+  ;; disable vertical scroll bar
+  (add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
+  ;; remove white spaces on save hook
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  ;; switch buffers (shift) + left,right,top,bottom arrows
+  (when (fboundp 'windmove-default-keybindings)
+    (windmove-default-keybindings))
+  ;; disable lock files
+  (setq create-lockfiles nil)
+  ;; identation for src blocks in org mode
+  (setq org-src-tab-acts-natively t)
+  ;; disable backup files
+  (setq make-backup-files nil)
+  ;; disable auto save list file names
+  (setq auto-save-list-file-name nil)
+  ;; disable default auto save
+  (setq auto-save-default nil)
+  ;; remove double space
+  (setq sentence-end-double-space nil)
+  ;; garbage collector size
+  (setq gc-cons-threshold 20000000)
+  ;; symlinks
+  (setq vc-follow-symlinks t)
+  ;; disable default startup screen
+  (setq inhibit-startup-screen t)
+  ;; column number
+  (setq column-number-mode t)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; install zenburn ui theme
+  (use-package zenburn-theme
+    :config
+    (load-theme 'zenburn t))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; hide dotfiles toggler
+  (use-package dired-hide-dotfiles
+    :hook
+    (dired-mode . dired-hide-dotfiles-mode)
+    :bind
+    (:map dired-mode-map
+	  ("," . dired-hide-dotfiles-mode)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; eglot mode
+  (use-package eglot
+    :bind
+    (:map eglot-mode-map
+	  ("C-c <tab>" . company-complete)
+	  ("C-c e f n" . flymake-goto-next-error)
+	  ("C-c e f p" . flymake-goto-prev-error)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; ido mode
+  (use-package ido
+    :init
+    (setq ido-enable-flex-matching t)
+    :config
+    (ido-mode t)
+    (ido-everywhere t))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; virtual env wrapper
+  (use-package virtualenvwrapper
+    :init
+    (setq venv-location "~/.envs")
+    :config
+    (venv-initialize-interactive-shells)
+    (venv-initialize-eshell))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; glsl-mode
+  (use-package glsl-mode)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; yasnippet
+  (use-package yasnippet
+    :init
+    (yas-global-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; auto completion
+  (use-package company
+    :config
+    (progn
+      (setq company-dabbrev-downcase nil)
+      (global-company-mode)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; enchanted Meta-x
+  (use-package smex
+    :bind
+    (("M-x" . smex)
+     ("M-X" . smex-major-mode-commands)
+     ("C-c C-c M-x" . execute-extended-command)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; ido, but vertical
+  (use-package ido-vertical-mode
+  :init
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+  (setq ido-vertical-show-count t)
+  :config
+  (ido-vertical-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; package to edit multiple lines
+  (use-package multiple-cursors
+    :bind
+    (("C-." . mc/mark-next-like-this)
+     ("C-," . mc/mark-previous-like-this)
+     ("C->" . mc/unmark-next-like-this)
+     ("C-<" . mc/unmark-previous-like-this)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; nim language mode
+  (use-package nim-mode
+    :init
+    ;; default compile command
+    (setq nim-compile-default-command '("c" "-r"))
+    ;; make nimble packages visible
+    (setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/.nimble/bin"))))
+#+end_src
+
+#+begin_src emacs-lisp
+    ;; js2 mode
+  (use-package js2-mode
+    :config
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; kivy framework mode
+  (use-package kivy-mode)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; try any packages u want!
+  (use-package try)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; browse other pcs via ssh
+  (use-package tramp-term)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; no comments
+  (use-package magit)
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; html auto-completion package
+  (use-package emmet-mode
+    :hook
+    ((sgml-mode . emmet-mode)
+     (html-mode . emmet-mode)
+     (css-mode-hook . emmet-mode)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; live filtering in dired buffers
+  (use-package dired-narrow
+    :config
+    (put 'dired-find-alternate-file 'disabled nil)
+    :bind
+    (:map dired-mode-map("/" . dired-narrow-fuzzy)))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; cursor highlighting
+  (use-package beacon
+    :config
+    (beacon-mode 1))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; vue framework mode
+  (use-package vue-mode
+    :init
+    ;; disable highlighted background
+    (setq mmm-submode-decoration-level 0))
+#+end_src
