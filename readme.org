@@ -91,8 +91,6 @@
   (set-frame-font "Hack-12")
   ;; set font for frames
   (add-to-list 'default-frame-alist '(font . "Hack-12"))
-  ;; set transparency for other frames
-  (add-to-list 'default-frame-alist '(alpha 85 85))
   ;; highlight parenthesis
   (show-paren-mode t)
   ;; disable toolbar
